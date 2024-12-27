@@ -3,7 +3,7 @@ if (!OPENAI_API_URL) {
   throw new Error('API_URL environment variable is required');
 }
 
-interface FormData {
+export interface FormData {
   ageRange: string;
   ageBand: string;
   country: string;
@@ -35,7 +35,7 @@ interface Persona {
   yearOfBirth: string;
 }
 
-interface ApiResponse {
+export interface ApiResponse {
   persona: Persona;
   historicalEvents: HistoricalEvent[];
   technology: Technology;
