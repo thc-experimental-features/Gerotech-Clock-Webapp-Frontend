@@ -1,44 +1,5 @@
 import React, { useState } from 'react';
-
-interface AgeRange {
-  value: string;
-  label: string;
-}
-
-interface AgeBand {
-  value: string;
-  label: string;
-}
-
-interface Country {
-  value: string;
-  label: string;
-}
-
-interface HealthStatus {
-  id: string;
-  label: string;
-}
-
-interface FormData {
-  ageRange: string;
-  ageBand: string;
-  country: string;
-  healthStatus: string;
-  gender: 'female' | 'male';
-  livingArrangement: 'independent' | 'family' | 'assisted' | 'nursing';
-}
-
-interface ProcessedData {
-  ageInfo: {
-    range: string;
-    band: string;
-  };
-  country: string;
-  healthStatus: string;
-  gender: string;
-  livingArrangement: string;
-}
+import { PersonaFormData, AgeRange, AgeBand, Country, HealthStatus, ProfileFormProps } from '../types';
 
 const AGE_RANGES: AgeRange[] = [
   { value: '60-70', label: '60-70 years old' },
@@ -257,8 +218,8 @@ const COUNTRY: Country[] = [
   { value: 'ZWE', label: 'Zimbabwe' }
 ];
 
-const ProfileForm = ({ onSubmit }: { onSubmit: (data: ProcessedData) => void} ) => {
-  const [formData, setFormData] = useState<FormData>({
+const ProfileForm = ({ onSubmit }: ProfileFormProps) => {
+  const [formData, setFormData] = useState<PersonaFormData>({
     ageRange: '',
     ageBand: '',
     country: '',
@@ -273,18 +234,13 @@ const ProfileForm = ({ onSubmit }: { onSubmit: (data: ProcessedData) => void} ) 
     const selectedCountry = COUNTRY.find(c => c.value === formData.country)?.label || '';
     const healthLabel = HEALTH_STATUS.find(h => h.id === formData.healthStatus)?.label || '';
     
-    const processedData: ProcessedData = {
-      ageInfo: {
-        range: formData.ageRange,
-        band: formData.ageBand,
-      },
+    const submissionData: PersonaFormData = {
+      ...formData,
       country: selectedCountry,
       healthStatus: healthLabel,
-      gender: formData.gender,
-      livingArrangement: formData.livingArrangement,
     };
-
-    onSubmit(processedData);
+  
+    onSubmit(submissionData);
   };
 
   return (
@@ -388,7 +344,7 @@ const ProfileForm = ({ onSubmit }: { onSubmit: (data: ProcessedData) => void} ) 
         <select
           id="livingArrangement"
           value={formData.livingArrangement}
-          onChange={(e) => setFormData({ ...formData, livingArrangement: e.target.value as FormData['livingArrangement'] })}
+          onChange={(e) => setFormData({ ...formData, livingArrangement: e.target.value as PersonaFormData['livingArrangement'] })}
           className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
         >
           <option value="independent">Living Independently</option>

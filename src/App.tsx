@@ -1,17 +1,18 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 import ProfileForm from './components/ProfileForm'
 import ResultsDisplay from './components/ResultsDisplay'
 import EmptyState from './components/EmptyState'
 import LoadingState from './components/LoadingState'
-import { generatePersona, FormData, ApiResponse } from './services/openaiService'
+import { generatePersona } from './services/openaiService'
+import { PersonaFormData, ApiResponse } from './types';
 
 function App(): JSX.Element {
   const [showResults, setShowResults] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState<boolean>(false)
-  const [personaData, setPersonaData] = useState<ApiResponse | null>(null)
+  const [personaData, setPersonaData] = useState<ApiResponse | undefined>(undefined)
   const [error, setError] = useState<string | null>(null)
 
-  const handleSubmit = async (formData: FormData): Promise<void> => {
+  const handleSubmit = async (formData: PersonaFormData): Promise<void> => {
     setIsLoading(true)
     setError(null)
     try {

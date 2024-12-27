@@ -1,30 +1,5 @@
 import React from "react";
-
-interface ResultsData {
-  persona: {
-    summary: string;
-    yearOfBirth: string;
-  };
-  historicalEvents: {
-    year: string;
-    event: string;
-    description: string;
-  }[];
-  technology: {
-    familiarity: string;
-    devices: string[];
-    challenges: string[];
-  };
-  health: {
-    current: string;
-    conditions: string[];
-    predictions: string[];
-  };
-}
-
-interface ResultsDisplayProps {
-  data?: ResultsData;
-}
+import { ResultsDisplayProps } from '../types';
 
 export default function ResultsDisplay({ data }: ResultsDisplayProps): JSX.Element | null {
   if (!data) {
