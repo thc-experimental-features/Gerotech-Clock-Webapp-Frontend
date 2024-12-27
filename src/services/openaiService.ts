@@ -1,3 +1,8 @@
+const OPENAI_API_URL: string = import.meta.env.VITE_API_URL
+if (!OPENAI_API_URL) {
+  throw new Error('API_URL environment variable is required');
+}
+
 interface FormData {
   ageRange: string;
   ageBand: string;
@@ -36,8 +41,6 @@ interface ApiResponse {
   technology: Technology;
   health: Health;
 }
-
-const OPENAI_API_URL = 'http://localhost:3001/api/openai';
 
 export async function generatePersona(formData: FormData): Promise<ApiResponse> {
   try {

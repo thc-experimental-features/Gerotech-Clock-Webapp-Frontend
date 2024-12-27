@@ -1,27 +1,66 @@
-// src/components/ProfileForm.jsx
-import { useState } from 'react'
+import React, { useState } from 'react';
 
-const AGE_RANGES = [
+interface AgeRange {
+  value: string;
+  label: string;
+}
+
+interface AgeBand {
+  value: string;
+  label: string;
+}
+
+interface Country {
+  value: string;
+  label: string;
+}
+
+interface HealthStatus {
+  id: string;
+  label: string;
+}
+
+interface FormData {
+  ageRange: string;
+  ageBand: string;
+  country: string;
+  healthStatus: string;
+  gender: 'female' | 'male';
+  livingArrangement: 'independent' | 'family' | 'assisted' | 'nursing';
+}
+
+interface ProcessedData {
+  ageInfo: {
+    range: string;
+    band: string;
+  };
+  country: string;
+  healthStatus: string;
+  gender: string;
+  livingArrangement: string;
+}
+
+const AGE_RANGES: AgeRange[] = [
   { value: '60-70', label: '60-70 years old' },
   { value: '70-80', label: '70-80 years old' },
   { value: '80-90', label: '80-90 years old' },
   { value: '90+', label: '90+ years old' },
-]
+];
 
-const AGE_BANDS = [
+const AGE_BANDS: AgeBand[] = [
   { value: '60s', label: '60s' },
   { value: '70s', label: '70s' },
   { value: '80s', label: '80s' },
   { value: '90s', label: '90s' },
-]
+];
 
-const HEALTH_STATUS = [
+const HEALTH_STATUS: HealthStatus[] = [
   { id: 'none', label: 'No assistance needed' },
   { id: 'iadls', label: 'Needs help with IADLs' },
   { id: 'adls', label: 'Needs help with ADLs' },
-]
+];
 
-const COUNTRY = [
+const COUNTRY: Country[] = [
   { value: 'AFG', label: 'Afghanistan' },
   { value: 'ALB', label: 'Albania' },
   { value: 'DZA', label: 'Algeria' },
@@ -218,27 +257,23 @@ const COUNTRY = [
   { value: 'ZWE', label: 'Zimbabwe' }
 ];
 
-export default function ProfileForm({ onSubmit }) {
-  const [formData, setFormData] = useState({
+const ProfileForm = ({ onSubmit }: { onSubmit: (data: ProcessedData) => void} ) => {
+  const [formData, setFormData] = useState<FormData>({
     ageRange: '',
     ageBand: '',
     country: '',
     healthStatus: '',
-    gender: 'female', // Added gender field with default
-    livingArrangement: 'independent', // Added living arrangement field
-  })
+    gender: 'female',
+    livingArrangement: 'independent',
+  });
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     
-    // Find country label from the value
-    const selectedCountry = COUNTRY.find(c => c.value === formData.country)?.label || ''
+    const selectedCountry = COUNTRY.find(c => c.value === formData.country)?.label || '';
+    const healthLabel = HEALTH_STATUS.find(h => h.id === formData.healthStatus)?.label || '';
     
-    // Format health status label
-    const healthLabel = HEALTH_STATUS.find(h => h.id === formData.healthStatus)?.label || ''
-    
-    // Prepare the prompt for Claude
-    const processedData = {
+    const processedData: ProcessedData = {
       ageInfo: {
         range: formData.ageRange,
         band: formData.ageBand,
@@ -247,10 +282,10 @@ export default function ProfileForm({ onSubmit }) {
       healthStatus: healthLabel,
       gender: formData.gender,
       livingArrangement: formData.livingArrangement,
-    }
+    };
 
-    onSubmit(processedData)
-  }
+    onSubmit(processedData);
+  };
 
   return (
     <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow p-6 space-y-6">
@@ -266,7 +301,7 @@ export default function ProfileForm({ onSubmit }) {
               name="gender"
               value="female"
               checked={formData.gender === 'female'}
-              onChange={(e) => setFormData({ ...formData, gender: e.target.value })}
+              onChange={(e) => setFormData({ ...formData, gender: e.target.value as 'female' | 'male' })}
               className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-500"
             />
             <span className="ml-2 text-sm text-gray-700">Female</span>
@@ -277,7 +312,7 @@ export default function ProfileForm({ onSubmit }) {
               name="gender"
               value="male"
               checked={formData.gender === 'male'}
-              onChange={(e) => setFormData({ ...formData, gender: e.target.value })}
+              onChange={(e) => setFormData({ ...formData, gender: e.target.value as 'female' | 'male' })}
               className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-500"
             />
             <span className="ml-2 text-sm text-gray-700">Male</span>
@@ -353,7 +388,7 @@ export default function ProfileForm({ onSubmit }) {
         <select
           id="livingArrangement"
           value={formData.livingArrangement}
-          onChange={(e) => setFormData({ ...formData, livingArrangement: e.target.value })}
+          onChange={(e) => setFormData({ ...formData, livingArrangement: e.target.value as FormData['livingArrangement'] })}
           className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
         >
           <option value="independent">Living Independently</option>
@@ -392,5 +427,7 @@ export default function ProfileForm({ onSubmit }) {
         Generate Profile
       </button>
     </form>
-  )
-}
+  );
+};
+
+export default ProfileForm;
