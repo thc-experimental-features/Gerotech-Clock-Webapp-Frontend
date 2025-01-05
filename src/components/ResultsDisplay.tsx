@@ -1,5 +1,7 @@
-// src/components/ResultsDisplay.jsx
-export default function ResultsDisplay({ data }) {
+import React from "react";
+import { ResultsDisplayProps } from '../types';
+
+export default function ResultsDisplay({ data }: ResultsDisplayProps): JSX.Element | null {
   if (!data) {
     return null;
   }

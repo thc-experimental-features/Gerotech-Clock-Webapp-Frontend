@@ -1,3 +1,5 @@
+import React from "react";
+
 export default function EmptyState() {
     return (
       <div className="flex flex-col items-center justify-center h-96 bg-white rounded-lg shadow p-6">
