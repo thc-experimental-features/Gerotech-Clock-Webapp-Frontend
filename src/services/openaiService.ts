@@ -1,6 +1,6 @@
 import { PersonaFormData, ApiResponse } from '../types';
 
-const OPENAI_API_URL: string = import.meta.env.VITE_API_URL;
+const OPENAI_API_URL: string = `${import.meta.env.VITE_API_URL}/api/openai`;
 if (!OPENAI_API_URL) {
   throw new Error('API_URL environment variable is required');
 }
