@@ -6,7 +6,7 @@ import LoadingState from './components/LoadingState'
 import { generatePersona } from './services/openaiService'
 import { PersonaFormData, ApiResponse } from './types';
 
-function App(): JSX.Element {
+function App(): React.JSX.Element {
   const [showResults, setShowResults] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [personaData, setPersonaData] = useState<ApiResponse | undefined>(undefined)
@@ -40,7 +40,7 @@ function App(): JSX.Element {
       <main className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
         <div className="grid gap-8 lg:grid-cols-12">
           <div className="lg:col-span-4">
-            <ProfileForm onSubmit={handleSubmit} />
+            <ProfileForm onSubmit={handleSubmit} isLoading={isLoading} />
           </div>
           <div className="lg:col-span-8">
             {isLoading ? (

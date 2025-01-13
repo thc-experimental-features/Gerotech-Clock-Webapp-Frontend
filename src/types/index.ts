@@ -68,6 +68,7 @@ export interface ApiResponse {
 
 export interface ProfileFormProps {
     onSubmit: (data: PersonaFormData) => void;
+    isLoading: boolean;
 }
 
 export interface ResultsDisplayProps {
