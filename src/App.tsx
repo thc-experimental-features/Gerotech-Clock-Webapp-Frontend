@@ -1,57 +1,24 @@
-import React, { useState } from 'react'
-import ProfileForm from './components/ProfileForm'
-import ResultsDisplay from './components/ResultsDisplay'
-import EmptyState from './components/EmptyState'
-import LoadingState from './components/LoadingState'
-import { generatePersona } from './services/openaiService'
-import { PersonaFormData, ApiResponse } from './types';
+import React from 'react'
+
+import MyRouter from "./routers";
 
 function App(): React.JSX.Element {
-  const [showResults, setShowResults] = useState<boolean>(false)
-  const [isLoading, setIsLoading] = useState<boolean>(false)
-  const [personaData, setPersonaData] = useState<ApiResponse | undefined>(undefined)
-  const [error, setError] = useState<string | null>(null)
-
-  const handleSubmit = async (formData: PersonaFormData): Promise<void> => {
-    setIsLoading(true)
-    setError(null)
-    try {
-      const data = await generatePersona(formData)
-      setPersonaData(data)
-      setShowResults(true)
-    } catch (err) {
-      setError('Failed to generate persona. Please try again.')
-      console.error(err)
-    } finally {
-      setIsLoading(false)
-    }
-  }
-
   return (
     <div className="min-h-screen bg-gray-50">
       <header className="bg-white shadow">
-        <div className="max-w-7xl mx-auto px-4 py-6">
+        <div className="max-w-7xl mx-auto px-4 py-6 flex flex-col gap-3">
           <h1 className="text-3xl font-bold text-gray-900">
-            Persona Card
+            {/*Persona Card*/}
+            Careverse Experimental Features
           </h1>
+
+          <h2 className="text-xl font-medium uppercase text-gray-700">
+            Persona Card
+          </h2>
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-        <div className="grid gap-8 lg:grid-cols-12">
-          <div className="lg:col-span-4">
-            <ProfileForm onSubmit={handleSubmit} isLoading={isLoading} />
-          </div>
-          <div className="lg:col-span-8">
-            {isLoading ? (
-              <LoadingState />
-            ) : showResults ? (
-              <ResultsDisplay data={personaData} />
-            ) : (
-              <EmptyState />
-            )}
-          </div>
-        </div>
+      <main className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8"> <MyRouter />
       </main>
     </div>
   )
