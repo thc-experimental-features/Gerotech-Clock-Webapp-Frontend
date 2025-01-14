@@ -3,11 +3,6 @@ export interface AgeRange {
     label: string;
 }
 
-export interface AgeBand {
-    value: string;
-    label: string;
-}
-
 export interface Country {
     value: string;
     label: string;
@@ -20,7 +15,6 @@ export interface HealthStatus {
 
 export interface PersonaFormData {
     ageRange: string;
-    ageBand: string;
     country: string;
     healthStatus: string;
     gender: 'female' | 'male';
@@ -29,7 +23,6 @@ export interface PersonaFormData {
 
 export interface ApiFormData {
     ageRange: string;
-    ageBand: string;
     country: string;
     healthStatus: string;
     gender?: string;
