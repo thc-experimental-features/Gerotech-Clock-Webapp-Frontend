@@ -63,9 +63,11 @@ export interface ApiResponse {
 
 export interface ProfileFormProps {
     onSubmit: (data: PersonaFormData) => void;
+    setYearsBorn: (value: string) => void;
     isLoading: boolean;
 }
 
 export interface ResultsDisplayProps {
     data?: ApiResponse;
+    yearsBornText: string;
 }
