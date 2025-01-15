@@ -1,6 +1,8 @@
 export interface AgeRange {
     value: string;
     label: string;
+    minAge: number;
+    maxAge: number;
 }
 
 export interface Country {

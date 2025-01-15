@@ -7,7 +7,7 @@ import { generatePersona } from './services/openaiService'
 import { PersonaFormData, ApiResponse } from './types';
 
 function App(): React.JSX.Element {
-  const [showResults, setShowResults] = useState<boolean>(false)
+
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [personaData, setPersonaData] = useState<ApiResponse | undefined>(undefined)
   const [error, setError] = useState<string | null>(null)
@@ -18,7 +18,6 @@ function App(): React.JSX.Element {
     try {
       const data = await generatePersona(formData)
       setPersonaData(data)
-      setShowResults(true)
     } catch (err) {
       setError('Failed to generate persona. Please try again.')
       console.error(err)
@@ -45,7 +44,7 @@ function App(): React.JSX.Element {
           <div className="lg:col-span-8">
             {isLoading ? (
               <LoadingState />
-            ) : showResults ? (
+            ) : personaData ? (
               <ResultsDisplay data={personaData} />
             ) : (
               <EmptyState />

@@ -3,10 +3,11 @@ import { AgeRange, Country, HealthStatus, ProfileFormProps } from '../types';
 export const CONSTANTS = {
     PERSONA_CARD: {
         AGE_RANGES: [
-            { value: '60-70', label: '60-70 years old' },
-            { value: '70-80', label: '70-80 years old' },
-            { value: '80-90', label: '80-90 years old' },
-            { value: '90+', label: '90+ years old' },
+            { value: '50-60', label: '50-60 years old', minAge: 50, maxAge: 60 },
+            { value: '60-70', label: '60-70 years old', minAge: 60, maxAge: 70 },
+            { value: '70-80', label: '70-80 years old', minAge: 70, maxAge: 80 },
+            { value: '80-90', label: '80-90 years old', minAge: 80, maxAge: 90 },
+            { value: '90+', label: '90+ years old', minAge: 90, maxAge: 90 },
         ] as AgeRange[],
 
         HEALTH_STATUS: [
