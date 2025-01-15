@@ -7,9 +7,10 @@ import { generatePersona } from './services/openaiService'
 import { PersonaFormData, ApiResponse } from './types';
 
 function App(): React.JSX.Element {
-  const [showResults, setShowResults] = useState<boolean>(false)
+
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [personaData, setPersonaData] = useState<ApiResponse | undefined>(undefined)
+  const [yearsBorn, setYearsBorn] = useState<string>("");
   const [error, setError] = useState<string | null>(null)
 
   const handleSubmit = async (formData: PersonaFormData): Promise<void> => {
@@ -18,7 +19,6 @@ function App(): React.JSX.Element {
     try {
       const data = await generatePersona(formData)
       setPersonaData(data)
-      setShowResults(true)
     } catch (err) {
       setError('Failed to generate persona. Please try again.')
       console.error(err)
@@ -40,13 +40,13 @@ function App(): React.JSX.Element {
       <main className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
         <div className="grid gap-8 lg:grid-cols-12">
           <div className="lg:col-span-4">
-            <ProfileForm onSubmit={handleSubmit} isLoading={isLoading} />
+            <ProfileForm onSubmit={handleSubmit} isLoading={isLoading} setYearsBorn={setYearsBorn}/>
           </div>
           <div className="lg:col-span-8">
             {isLoading ? (
               <LoadingState />
-            ) : showResults ? (
-              <ResultsDisplay data={personaData} />
+            ) : personaData ? (
+              <ResultsDisplay data={personaData} yearsBornText={yearsBorn}/>
             ) : (
               <EmptyState />
             )}

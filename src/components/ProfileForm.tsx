@@ -1,8 +1,8 @@
 import React, { useState, useMemo } from "react";
-import { PersonaFormData, ProfileFormProps } from "../types";
+import {AgeRange, PersonaFormData, ProfileFormProps} from "../types";
 import { CONSTANTS } from "../constants";
 
-const ProfileForm = ({ onSubmit, isLoading }: ProfileFormProps) => {
+const ProfileForm = ({ onSubmit, isLoading, setYearsBorn }: ProfileFormProps) => {
   const [formData, setFormData] = useState<PersonaFormData>({
     ageRange: "",
     country: "",
@@ -44,6 +44,34 @@ const ProfileForm = ({ onSubmit, isLoading }: ProfileFormProps) => {
 
     onSubmit(submissionData);
   };
+
+  const handleAgeRangeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setFormData({ ...formData, ageRange: e.target.value })
+
+    if (!e.target.value) {
+      return;
+    }
+
+    const selectedAgeRange = CONSTANTS.PERSONA_CARD.AGE_RANGES.find(x => x.value === e.target.value);
+
+    setYearsBorn(getYearsBornText(selectedAgeRange));
+  }
+
+  const getYearsBornText = (selectedAgeRange: AgeRange | undefined) => {
+    if (!selectedAgeRange) {
+      return '';
+    }
+
+    const currentYear = new Date().getFullYear();
+    const yearForYoungest = currentYear - selectedAgeRange.minAge;
+    const yearForOldest = currentYear - selectedAgeRange.maxAge;
+
+    if (yearForYoungest === yearForOldest) {
+      return `Born in ${yearForOldest} and earlier`
+    }
+
+    return `Born in ${yearForOldest}-${yearForYoungest}`;
+  }
 
   return (
     <form
@@ -102,9 +130,7 @@ const ProfileForm = ({ onSubmit, isLoading }: ProfileFormProps) => {
         <select
           id="ageRange"
           value={formData.ageRange}
-          onChange={(e) =>
-            setFormData({ ...formData, ageRange: e.target.value })
-          }
+          onChange={handleAgeRangeChange}
           className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
         >
           <option value="">Select age range</option>

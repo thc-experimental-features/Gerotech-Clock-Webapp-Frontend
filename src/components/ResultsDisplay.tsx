@@ -1,7 +1,7 @@
 import React from "react";
 import { ResultsDisplayProps } from '../types';
 
-export default function ResultsDisplay({ data }: ResultsDisplayProps): JSX.Element | null {
+export default function ResultsDisplay({ data, yearsBornText }: ResultsDisplayProps): JSX.Element | null {
   if (!data) {
     return null;
   }
@@ -13,7 +13,7 @@ export default function ResultsDisplay({ data }: ResultsDisplayProps): JSX.Eleme
         <h2 className="text-xl font-semibold text-gray-900 mb-4">Generated Profile</h2>
         <div className="prose max-w-none">
           <p className="text-gray-700">{data.persona.summary}</p>
-          <p className="text-sm text-gray-500 mt-2">Born in {data.persona.yearOfBirth}</p>
+          <p className="text-sm text-gray-500 mt-2">Born in {yearsBornText}</p>
         </div>
       </div>
 
