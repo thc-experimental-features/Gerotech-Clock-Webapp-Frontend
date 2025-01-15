@@ -27,10 +27,6 @@ function App(): React.JSX.Element {
     }
   }
 
-  const calculateYearsBorn = (val: string) => {
-    setYearsBorn(val);
-  }
-
   return (
     <div className="min-h-screen bg-gray-50">
       <header className="bg-white shadow">
