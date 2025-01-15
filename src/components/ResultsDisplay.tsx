@@ -84,7 +84,7 @@ export default function ResultsDisplay({ data }: ResultsDisplayProps): JSX.Eleme
           </div>
 
           <div>
-            <h3 className="text-sm font-medium text-gray-700">Current Conditions</h3>
+            <h3 className="text-sm font-medium text-gray-700">Current Condition Predictions</h3>
             <ul className="mt-2 space-y-2">
               {data.health.conditions.map((condition, index) => (
                 <li key={index} className="flex items-start">

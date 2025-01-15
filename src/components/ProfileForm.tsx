@@ -5,7 +5,6 @@ import { CONSTANTS } from "../constants";
 const ProfileForm = ({ onSubmit, isLoading }: ProfileFormProps) => {
   const [formData, setFormData] = useState<PersonaFormData>({
     ageRange: "",
-    ageBand: "",
     country: "",
     healthStatus: "",
     gender: "female",
@@ -112,31 +111,6 @@ const ProfileForm = ({ onSubmit, isLoading }: ProfileFormProps) => {
           {CONSTANTS.PERSONA_CARD.AGE_RANGES.map((range) => (
             <option key={range.value} value={range.value}>
               {range.label}
-            </option>
-          ))}
-        </select>
-      </div>
-
-      {/* Age Band */}
-      <div>
-        <label
-          htmlFor="ageBand"
-          className="block text-sm font-medium text-gray-700"
-        >
-          Age Band
-        </label>
-        <select
-          id="ageBand"
-          value={formData.ageBand}
-          onChange={(e) =>
-            setFormData({ ...formData, ageBand: e.target.value })
-          }
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-        >
-          <option value="">Select age band</option>
-          {CONSTANTS.PERSONA_CARD.AGE_BANDS.map((band) => (
-            <option key={band.value} value={band.value}>
-              {band.label}
             </option>
           ))}
         </select>

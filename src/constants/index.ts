@@ -1,4 +1,4 @@
-import { AgeRange, AgeBand, Country, HealthStatus, ProfileFormProps } from '../types';
+import { AgeRange, Country, HealthStatus, ProfileFormProps } from '../types';
 
 export const CONSTANTS = {
     PERSONA_CARD: {
@@ -8,13 +8,6 @@ export const CONSTANTS = {
             { value: '80-90', label: '80-90 years old' },
             { value: '90+', label: '90+ years old' },
         ] as AgeRange[],
-
-        AGE_BANDS: [
-            { value: '60s', label: '60s' },
-            { value: '70s', label: '70s' },
-            { value: '80s', label: '80s' },
-            { value: '90s', label: '90s' },
-        ] as AgeBand[],
 
         HEALTH_STATUS: [
             { id: 'none', label: 'No assistance needed' },
