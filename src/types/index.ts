@@ -16,15 +16,17 @@ export interface HealthStatus {
 }
 
 export interface PersonaFormData {
-    ageRange: string;
+    age: string;
+    yearsBorn: string;
     country: string;
     healthStatus: string;
     gender: 'female' | 'male';
     livingArrangement: 'independent' | 'family' | 'assisted' | 'nursing';
-  }
+}
 
 export interface ApiFormData {
-    ageRange: string;
+    age: string;
+    yearsBorn: string;
     country: string;
     healthStatus: string;
     gender?: string;
@@ -33,6 +35,7 @@ export interface ApiFormData {
 
 export interface HistoricalEvent {
     year: string;
+    ageAtEvent: string;
     event: string;
     description: string;
 }
@@ -63,11 +66,9 @@ export interface ApiResponse {
 
 export interface ProfileFormProps {
     onSubmit: (data: PersonaFormData) => void;
-    setYearsBorn: (value: string) => void;
     isLoading: boolean;
 }
 
 export interface ResultsDisplayProps {
     data?: ApiResponse;
-    yearsBornText: string;
 }
