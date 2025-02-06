@@ -186,7 +186,6 @@ const ProfileForm = ({ onSubmit, isLoading }: ProfileFormProps) => {
         >
           <option value="independent">Living Independently</option>
           <option value="family">Living with Family</option>
-          <option value="assisted">Assisted Living Facility</option>
           <option value="nursing">Nursing Home</option>
         </select>
       </div>

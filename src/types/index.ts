@@ -21,7 +21,7 @@ export interface PersonaFormData {
     country: string;
     healthStatus: string;
     gender: 'female' | 'male';
-    livingArrangement: 'independent' | 'family' | 'assisted' | 'nursing';
+    livingArrangement: 'independent' | 'family' | 'nursing';
 }
 
 export interface ApiFormData {
