@@ -39,9 +39,15 @@ export interface HistoricalEvent {
     description: string;
 }
 
+export interface Device {
+    name: string;
+    familiarity: string;
+    ageAtIntroduction: string;
+}
+
 export interface Technology {
     familiarity: string;
-    devices: string[];
+    devices: Device[];
     challenges: string[];
 }
 

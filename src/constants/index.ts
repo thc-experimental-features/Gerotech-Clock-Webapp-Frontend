@@ -15,7 +15,6 @@ export const CONSTANTS = {
         COUNTRY: [
             { value: 'AFG', label: 'Afghanistan' },
             { value: 'ALB', label: 'Albania' },
-
             { value: 'DZA', label: 'Algeria' },
             { value: 'AND', label: 'Andorra' },
             { value: 'AGO', label: 'Angola' },
