@@ -11,7 +11,6 @@ export const CONSTANTS = {
         ] as AgeRange[],
 
         HEALTH_STATUS: [
-            { id: 'none', label: 'No assistance needed' },
             { id: 'iadls', label: 'Needs help with IADLs' },
             { id: 'adls', label: 'Needs help with ADLs' },
         ] as HealthStatus[],
