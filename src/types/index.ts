@@ -1,12 +1,11 @@
-export interface AgeRange {
+export interface Gender {
     value: string;
     label: string;
-    minAge: number;
-    maxAge: number;
 }
 
 export interface Country {
     value: string;
+
     label: string;
 }
 
@@ -20,7 +19,7 @@ export interface PersonaFormData {
     yearsBorn: string;
     country: string;
     healthStatus: string;
-    gender: 'female' | 'male';
+    gender: 'female' | 'male' | 'non-binary' | 'other';
     livingArrangement: 'independent' | 'family' | 'nursing';
 }
 

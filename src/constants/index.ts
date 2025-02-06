@@ -1,4 +1,4 @@
-import { AgeRange, Country, HealthStatus, ProfileFormProps } from '../types';
+import { Country, HealthStatus, Gender } from '../types';
 
 export const CONSTANTS = {
     PERSONA_CARD: {
@@ -6,10 +6,16 @@ export const CONSTANTS = {
             { id: 'iadls', label: 'Needs help with IADLs' },
             { id: 'adls', label: 'Needs help with ADLs' },
         ] as HealthStatus[],
-
+        GENDER: [
+            { value: 'female', label: 'Female' },
+            { value: 'male', label: 'Male' },
+            { value: 'non-binary', label: 'Non-binary' },
+            { value: 'other', label: 'Other' }
+        ] as Gender[],
         COUNTRY: [
             { value: 'AFG', label: 'Afghanistan' },
             { value: 'ALB', label: 'Albania' },
+
             { value: 'DZA', label: 'Algeria' },
             { value: 'AND', label: 'Andorra' },
             { value: 'AGO', label: 'Angola' },

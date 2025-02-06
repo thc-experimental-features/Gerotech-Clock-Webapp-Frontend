@@ -1,5 +1,5 @@
-import React, { useState, useMemo } from "react";
-import {AgeRange, PersonaFormData, ProfileFormProps} from "../types";
+import React, { useState } from "react";
+import {PersonaFormData, ProfileFormProps, Gender} from "../types";
 import { CONSTANTS } from "../constants";
 import { ExclamationCircleIcon } from "@heroicons/react/24/outline";
 const ProfileForm = ({ onSubmit, isLoading }: ProfileFormProps) => {
@@ -81,38 +81,24 @@ const ProfileForm = ({ onSubmit, isLoading }: ProfileFormProps) => {
           Gender
         </label>
         <div className="flex space-x-4">
-          <label className="flex items-center">
-            <input
-              type="radio"
-              name="gender"
-              value="female"
-              checked={formData.gender === "female"}
-              onChange={(e) =>
-                setFormData({
-                  ...formData,
-                  gender: e.target.value as "female" | "male",
-                })
-              }
-              className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-500"
-            />
-            <span className="ml-2 text-sm text-gray-700">Female</span>
-          </label>
-          <label className="flex items-center">
-            <input
-              type="radio"
-              name="gender"
-              value="male"
-              checked={formData.gender === "male"}
-              onChange={(e) =>
-                setFormData({
-                  ...formData,
-                  gender: e.target.value as "female" | "male",
-                })
-              }
-              className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-500"
-            />
-            <span className="ml-2 text-sm text-gray-700">Male</span>
-          </label>
+          {CONSTANTS.PERSONA_CARD.GENDER.map((option) => (
+            <label key={option.value} className="flex items-center">
+              <input
+                type="radio"
+                name="gender"
+                value={option.value}
+                checked={formData.gender === option.value}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    gender: e.target.value as PersonaFormData["gender"],
+                  })
+                }
+                className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-500"
+              />
+              <span className="ml-2 text-sm text-gray-700">{option.label}</span>
+            </label>
+          ))}
         </div>
       </div>
 
