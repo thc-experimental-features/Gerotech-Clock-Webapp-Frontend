@@ -198,16 +198,14 @@ export default function ResultsDisplay({
                       </span>
                     </div>
                     <div className="pl-4">
-                      <h5 className="text-sm font-medium text-gray-600 mb-1">
-                        Common Challenges:
-                      </h5>
-                      <ul className="list-disc pl-5 space-y-1">
-                        {disease.commonChallenges.map((challenge, idx) => (
-                          <li key={idx} className="text-gray-600 text-sm">
-                            {challenge}
-                          </li>
-                        ))}
-                      </ul>
+                      <div className="flex items-center gap-2">
+                        <h5 className="text-sm font-medium text-gray-600">
+                          Common Challenges:
+                        </h5>
+                        <span className="text-gray-600 text-sm">
+                          {disease.commonChallenges.join(", ")}
+                        </span>
+                      </div>
                     </div>
                   </div>
                 ))}
