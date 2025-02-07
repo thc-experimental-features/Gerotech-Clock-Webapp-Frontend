@@ -1,4 +1,4 @@
-import { Country, HealthStatus, Gender, Disease } from '../types';
+import { Country, HealthStatus, Gender, Disease, LivingArrangement } from '../types';
 
 export const CONSTANTS = {
     PERSONA_CARD: {
@@ -218,7 +218,13 @@ export const CONSTANTS = {
             { value: 'YEM', label: 'Yemen' },
             { value: 'ZMB', label: 'Zambia' },
             { value: 'ZWE', label: 'Zimbabwe' }
-        ] as Country[]
+        ] as Country[],
+
+        LIVING_ARRANGEMENT: [
+            { value: 'independent', label: 'Living Independently' },
+            { value: 'family', label: 'Living with Family' },
+            { value: 'nursing', label: 'Living in a Nursing Home' }
+        ] as LivingArrangement[]
     }
 };
 

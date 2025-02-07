@@ -3,11 +3,11 @@ import ProfileForm from './components/ProfileForm'
 import ResultsDisplay from './components/ResultsDisplay'
 import EmptyState from './components/EmptyState'
 import LoadingState from './components/LoadingState'
+import DownloadPDFButton from './components/PDF-Downloader/DownloadPDFButton'
 import { generatePersona } from './services/openaiService'
 import { PersonaFormData, ApiResponse } from './types';
 
 function App(): React.JSX.Element {
-
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [personaData, setPersonaData] = useState<ApiResponse | undefined>(undefined)
   const [error, setError] = useState<string | null>(null)
@@ -35,7 +35,6 @@ function App(): React.JSX.Element {
           </h1>
         </div>
       </header>
-
       <main className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
         <div className="grid gap-8 lg:grid-cols-12">
           <div className="lg:col-span-4">
@@ -45,7 +44,12 @@ function App(): React.JSX.Element {
             {isLoading ? (
               <LoadingState />
             ) : personaData ? (
-              <ResultsDisplay data={personaData}/>
+              <>
+                <div className="flex justify-end mb-3">
+                  <DownloadPDFButton data={personaData}/>
+                </div>
+                <ResultsDisplay data={personaData}/>
+              </>
             ) : (
               <EmptyState />
             )}

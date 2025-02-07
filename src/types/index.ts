@@ -18,15 +18,19 @@ export interface Disease {
     label: string;
 }
 
+export interface LivingArrangement {
+    value: string;
+    label: string;
+}
+
 export interface PersonaFormData {
     age: string;
-
     yearsBorn: string;
     country: string;
     healthStatus: string;
     diseases?: string[];
     gender: 'female' | 'male' | 'non-binary' | 'other';
-    livingArrangement: 'independent' | 'family' | 'nursing';
+    livingArrangement: string;
 }
 
 export interface ApiFormData {
@@ -72,6 +76,10 @@ export interface Health {
 export interface Persona {
     summary: string;
     age: string;
+    gender: string;
+    country: string;
+    healthStatus: string;
+    livingArrangement: string;
 }
 
 export interface ApiResponse {
@@ -88,4 +96,12 @@ export interface ProfileFormProps {
 
 export interface ResultsDisplayProps {
     data?: ApiResponse;
+}
+
+export interface DownloadPDFButtonProps {
+    data: ApiResponse;
+}
+
+export interface PDFDocumentProps {
+    data: ApiResponse;
 }

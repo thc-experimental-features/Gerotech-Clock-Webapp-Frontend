@@ -12,7 +12,7 @@ const ProfileForm = ({ onSubmit, isLoading }: ProfileFormProps) => {
     healthStatus: "",
     diseases: [],
     gender: "female",
-    livingArrangement: "independent",
+    livingArrangement: CONSTANTS.PERSONA_CARD.LIVING_ARRANGEMENT[0].value,
   });
 
   // Calculate age from year born
@@ -49,22 +49,30 @@ const ProfileForm = ({ onSubmit, isLoading }: ProfileFormProps) => {
       return;
     }
 
-    // Get the selected country, diseases, and health status
+    // Get the selected country, diseases, living arrangement, and health status
     const selectedCountry =
       CONSTANTS.PERSONA_CARD.COUNTRY.find((c) => c.value === formData.country)
         ?.label || "";
+
+    const livingArrangementLabel =
+      CONSTANTS.PERSONA_CARD.LIVING_ARRANGEMENT.find(
+        (l) => l.value === formData.livingArrangement
+      )?.label || "";
 
     const healthLabel =
       CONSTANTS.PERSONA_CARD.HEALTH_STATUS.find(
         (h) => h.id === formData.healthStatus
       )?.label || "";
 
+
     // Create the submission data
     const submissionData: PersonaFormData = {
       ...formData,
       country: selectedCountry,
       healthStatus: healthLabel,
+      livingArrangement: livingArrangementLabel,
     };
+
 
     onSubmit(submissionData);
   };
