@@ -2,13 +2,15 @@ import React, { useState } from "react";
 import {PersonaFormData, ProfileFormProps, Gender} from "../types";
 import { CONSTANTS } from "../constants";
 import { ExclamationCircleIcon } from "@heroicons/react/24/outline";
+
 const ProfileForm = ({ onSubmit, isLoading }: ProfileFormProps) => {
   // Initialize the form data
   const [formData, setFormData] = useState<PersonaFormData>({
     age: "",
     yearsBorn: "",
     country: "",
-    healthStatus: "", 
+    healthStatus: "",
+    diseases: [],
     gender: "female",
     livingArrangement: "independent",
   });
@@ -28,32 +30,36 @@ const ProfileForm = ({ onSubmit, isLoading }: ProfileFormProps) => {
 
   // Validate the form data
   const isSubmissionReady = () => {
-    const isValidField = (key: keyof PersonaFormData, value: string) => {
+    const isValidField = (key: keyof PersonaFormData, value: any) => {
       if (key === "gender" || key === "livingArrangement") return true;
+      if (key === "diseases") return Array.isArray(value);
       if (key === "yearsBorn") return isValidYear(value);
-      return value.trim() !== "";
+      return value.toString().trim() !== "";
     };
 
     return Object.entries(formData).every(([key, value]) => 
       isValidField(key as keyof PersonaFormData, value)
     );
-  }
+  };
 
   // Handle the form submission
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!isSubmissionReady || isLoading) {
+    if (!isSubmissionReady() || isLoading) {
       return;
     }
+
+    // Get the selected country, diseases, and health status
     const selectedCountry =
       CONSTANTS.PERSONA_CARD.COUNTRY.find((c) => c.value === formData.country)
         ?.label || "";
+
     const healthLabel =
       CONSTANTS.PERSONA_CARD.HEALTH_STATUS.find(
         (h) => h.id === formData.healthStatus
       )?.label || "";
 
-    // Include both yearsBorn and calculated age in submission
+    // Create the submission data
     const submissionData: PersonaFormData = {
       ...formData,
       country: selectedCountry,
@@ -66,6 +72,7 @@ const ProfileForm = ({ onSubmit, isLoading }: ProfileFormProps) => {
   // Handle the years born change
   const handleYearsBornChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const yearBorn = e.target.value;
+
     // Update form data with yearsBorn
     setFormData({ ...formData, yearsBorn: yearBorn, age: calculateAge(yearBorn).toString() });
   }
@@ -176,6 +183,33 @@ const ProfileForm = ({ onSubmit, isLoading }: ProfileFormProps) => {
         </select>
       </div>
 
+      {/* Diseases */}
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-2">
+          Diseases
+        </label>
+        <div className="space-y-2">
+          {CONSTANTS.PERSONA_CARD.DISEASES.map((disease) => (
+            <label key={disease.id} className="flex items-center space-x-3">
+              <input 
+                className="h-4 w-4 rounded-lg border-gray-300 text-indigo-600 focus:ring-indigo-500" 
+                type="checkbox" 
+                name="diseases" 
+                value={disease.id} 
+                checked={formData.diseases?.includes(disease.id)}
+                onChange={(e) => setFormData({ 
+                  ...formData, 
+                  diseases: e.target.checked 
+                    ? [...(formData.diseases || []), disease.id]
+                    : formData.diseases?.filter((id) => id !== disease.id) 
+                })}
+              />
+              <span className="text-sm text-gray-700">{disease.label}</span>
+            </label>
+          ))}
+        </div>
+      </div>
+
       {/* Health Status */}
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -202,9 +236,9 @@ const ProfileForm = ({ onSubmit, isLoading }: ProfileFormProps) => {
 
       <button
         type="submit"
-        disabled={!isSubmissionReady || isLoading}
+        disabled={!isSubmissionReady() || isLoading}
         className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white ${
-          !isSubmissionReady || isLoading
+          !isSubmissionReady() || isLoading
             ? "bg-indigo-200 cursor-not-allowed"
             : "bg-indigo-600 hover:bg-indigo-700"
         } focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500`}

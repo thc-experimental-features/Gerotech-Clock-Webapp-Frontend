@@ -5,7 +5,6 @@ export interface Gender {
 
 export interface Country {
     value: string;
-
     label: string;
 }
 
@@ -14,11 +13,18 @@ export interface HealthStatus {
     label: string;
 }
 
+export interface Disease {
+    id: string;
+    label: string;
+}
+
 export interface PersonaFormData {
     age: string;
+
     yearsBorn: string;
     country: string;
     healthStatus: string;
+    diseases?: string[];
     gender: 'female' | 'male' | 'non-binary' | 'other';
     livingArrangement: 'independent' | 'family' | 'nursing';
 }
@@ -51,15 +57,21 @@ export interface Technology {
     challenges: string[];
 }
 
+export interface DiseaseApiResponse {
+    name: string;
+    commonChallenges: string[];
+    riskLevel: "High Risk" | "Medium Risk" | "Low Risk";
+}
+
 export interface Health {
-    current: string;
+    current: DiseaseApiResponse[];
     conditions: string[];
-    predictions: string[];
+    considerations: string[];
 }
 
 export interface Persona {
     summary: string;
-    yearOfBirth: string;
+    age: string;
 }
 
 export interface ApiResponse {
