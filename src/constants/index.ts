@@ -1,20 +1,27 @@
-import { AgeRange, Country, HealthStatus, ProfileFormProps } from '../types';
+import { Country, HealthStatus, Gender, Disease, LivingArrangement } from '../types';
 
 export const CONSTANTS = {
     PERSONA_CARD: {
-        AGE_RANGES: [
-            { value: '50-60', label: '50-60 years old', minAge: 50, maxAge: 60 },
-            { value: '60-70', label: '60-70 years old', minAge: 60, maxAge: 70 },
-            { value: '70-80', label: '70-80 years old', minAge: 70, maxAge: 80 },
-            { value: '80-90', label: '80-90 years old', minAge: 80, maxAge: 90 },
-            { value: '90+', label: '90+ years old', minAge: 90, maxAge: 90 },
-        ] as AgeRange[],
-
         HEALTH_STATUS: [
-            { id: 'none', label: 'No assistance needed' },
             { id: 'iadls', label: 'Needs help with IADLs' },
             { id: 'adls', label: 'Needs help with ADLs' },
         ] as HealthStatus[],
+
+        DISEASES: [
+            { id: 'diabetes', label: 'Diabetes' },
+            { id: 'heart disease', label: 'Heart Disease' },
+            { id: 'stroke', label: 'Stroke' },
+            { id: 'high cholesterol', label: 'High Cholesterol' },
+            { id: 'dementia', label: 'Dementia' },
+            { id: 'kidney disease', label: 'Kidney Disease' },
+        ] as Disease[],
+
+        GENDER: [
+            { value: 'female', label: 'Female' },
+            { value: 'male', label: 'Male' },
+            { value: 'non-binary', label: 'Non-binary' },
+            { value: 'other', label: 'Other' }
+        ] as Gender[],
 
         COUNTRY: [
             { value: 'AFG', label: 'Afghanistan' },
@@ -211,7 +218,13 @@ export const CONSTANTS = {
             { value: 'YEM', label: 'Yemen' },
             { value: 'ZMB', label: 'Zambia' },
             { value: 'ZWE', label: 'Zimbabwe' }
-        ] as Country[]
+        ] as Country[],
+
+        LIVING_ARRANGEMENT: [
+            { value: 'independent', label: 'Living Independently' },
+            { value: 'family', label: 'Living with Family' },
+            { value: 'nursing', label: 'Living in a Nursing Home' }
+        ] as LivingArrangement[]
     }
 };
 

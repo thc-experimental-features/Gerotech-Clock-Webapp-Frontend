@@ -1,8 +1,6 @@
-export interface AgeRange {
+export interface Gender {
     value: string;
     label: string;
-    minAge: number;
-    maxAge: number;
 }
 
 export interface Country {
@@ -15,16 +13,29 @@ export interface HealthStatus {
     label: string;
 }
 
+export interface Disease {
+    id: string;
+    label: string;
+}
+
+export interface LivingArrangement {
+    value: string;
+    label: string;
+}
+
 export interface PersonaFormData {
-    ageRange: string;
+    age: string;
+    yearsBorn: string;
     country: string;
     healthStatus: string;
-    gender: 'female' | 'male';
-    livingArrangement: 'independent' | 'family' | 'assisted' | 'nursing';
-  }
+    diseases?: string[];
+    gender: 'female' | 'male' | 'non-binary' | 'other';
+    livingArrangement: string;
+}
 
 export interface ApiFormData {
-    ageRange: string;
+    age: string;
+    yearsBorn: string;
     country: string;
     healthStatus: string;
     gender?: string;
@@ -33,25 +44,42 @@ export interface ApiFormData {
 
 export interface HistoricalEvent {
     year: string;
+    ageAtEvent: string;
     event: string;
     description: string;
 }
 
+export interface Device {
+    name: string;
+    familiarity: string;
+    ageAtIntroduction: string;
+}
+
 export interface Technology {
     familiarity: string;
-    devices: string[];
+    devices: Device[];
     challenges: string[];
 }
 
+export interface DiseaseApiResponse {
+    name: string;
+    commonChallenges: string[];
+    riskLevel: "High Risk" | "Medium Risk" | "Low Risk";
+}
+
 export interface Health {
-    current: string;
+    current: DiseaseApiResponse[];
     conditions: string[];
-    predictions: string[];
+    considerations: string[];
 }
 
 export interface Persona {
     summary: string;
-    yearOfBirth: string;
+    age: string;
+    gender: string;
+    country: string;
+    healthStatus: string;
+    livingArrangement: string;
 }
 
 export interface ApiResponse {
@@ -63,11 +91,17 @@ export interface ApiResponse {
 
 export interface ProfileFormProps {
     onSubmit: (data: PersonaFormData) => void;
-    setYearsBorn: (value: string) => void;
     isLoading: boolean;
 }
 
 export interface ResultsDisplayProps {
     data?: ApiResponse;
-    yearsBornText: string;
+}
+
+export interface DownloadPDFButtonProps {
+    data: ApiResponse;
+}
+
+export interface PDFDocumentProps {
+    data: ApiResponse;
 }
