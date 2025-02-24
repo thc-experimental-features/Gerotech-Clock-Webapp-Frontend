@@ -1,76 +1,88 @@
-import React, { useState, useMemo } from "react";
-import {AgeRange, PersonaFormData, ProfileFormProps} from "../types";
+import React, { useState } from "react";
+import {PersonaFormData, ProfileFormProps, Gender} from "../types";
 import { CONSTANTS } from "../constants";
+import { ExclamationCircleIcon } from "@heroicons/react/24/outline";
 
-const ProfileForm = ({ onSubmit, isLoading, setYearsBorn }: ProfileFormProps) => {
+const ProfileForm = ({ onSubmit, isLoading }: ProfileFormProps) => {
+  // Initialize the form data
   const [formData, setFormData] = useState<PersonaFormData>({
-    ageRange: "",
+    age: "",
+    yearsBorn: "",
     country: "",
     healthStatus: "",
+    diseases: [],
     gender: "female",
-    livingArrangement: "independent",
+    livingArrangement: CONSTANTS.PERSONA_CARD.LIVING_ARRANGEMENT[0].value,
   });
 
-  const isSubmissionReady = useMemo(() => {
-    return Object.entries(formData).every(([key, value]) => {
-      switch (key) {
-        case "gender":
-        case "livingArrangement":
-          return true;
-        default:
-          return value.trim() !== "";
-      }
-    });
-  }, [formData]);
+  // Calculate age from year born
+  const calculateAge = (yearBorn: string): number => {
+    const currentYear = new Date().getFullYear();
+    return yearBorn ? currentYear - parseInt(yearBorn) : 0;
+  };
+  
+  // Validate the year born
+  const isValidYear = (year: string) => {
+    const currentYear = new Date().getFullYear();
+    const yearNum = parseInt(year);
+    return year.trim() !== "" && yearNum <= currentYear && yearNum >= 1900;
+  };
 
+  // Validate the form data
+  const isSubmissionReady = () => {
+    const isValidField = (key: keyof PersonaFormData, value: any) => {
+      if (key === "gender" || key === "livingArrangement") return true;
+      if (key === "diseases") return Array.isArray(value);
+      if (key === "yearsBorn") return isValidYear(value);
+      return value.toString().trim() !== "";
+    };
+
+    return Object.entries(formData).every(([key, value]) => 
+      isValidField(key as keyof PersonaFormData, value)
+    );
+  };
+
+  // Handle the form submission
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!isSubmissionReady || isLoading) {
+    if (!isSubmissionReady() || isLoading) {
       return;
     }
+
+    // Get the selected country, diseases, living arrangement, and health status
     const selectedCountry =
       CONSTANTS.PERSONA_CARD.COUNTRY.find((c) => c.value === formData.country)
         ?.label || "";
+
+    const livingArrangementLabel =
+      CONSTANTS.PERSONA_CARD.LIVING_ARRANGEMENT.find(
+        (l) => l.value === formData.livingArrangement
+      )?.label || "";
+
     const healthLabel =
       CONSTANTS.PERSONA_CARD.HEALTH_STATUS.find(
         (h) => h.id === formData.healthStatus
       )?.label || "";
 
+
+    // Create the submission data
     const submissionData: PersonaFormData = {
       ...formData,
       country: selectedCountry,
       healthStatus: healthLabel,
+      livingArrangement: livingArrangementLabel,
     };
+
 
     onSubmit(submissionData);
   };
 
-  const handleAgeRangeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setFormData({ ...formData, ageRange: e.target.value })
+  // Handle the years born change
+  const handleYearsBornChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const yearBorn = e.target.value;
 
-    if (!e.target.value) {
-      return;
-    }
-
-    const selectedAgeRange = CONSTANTS.PERSONA_CARD.AGE_RANGES.find(x => x.value === e.target.value);
-
-    setYearsBorn(getYearsBornText(selectedAgeRange));
-  }
-
-  const getYearsBornText = (selectedAgeRange: AgeRange | undefined) => {
-    if (!selectedAgeRange) {
-      return '';
-    }
-
-    const currentYear = new Date().getFullYear();
-    const yearForYoungest = currentYear - selectedAgeRange.minAge;
-    const yearForOldest = currentYear - selectedAgeRange.maxAge;
-
-    if (yearForYoungest === yearForOldest) {
-      return `Born in ${yearForOldest} and earlier`
-    }
-
-    return `Born in ${yearForOldest}-${yearForYoungest}`;
+    // Update form data with yearsBorn
+    setFormData({ ...formData, yearsBorn: yearBorn, age: calculateAge(yearBorn).toString() });
   }
 
   return (
@@ -84,62 +96,48 @@ const ProfileForm = ({ onSubmit, isLoading, setYearsBorn }: ProfileFormProps) =>
           Gender
         </label>
         <div className="flex space-x-4">
-          <label className="flex items-center">
-            <input
-              type="radio"
-              name="gender"
-              value="female"
-              checked={formData.gender === "female"}
-              onChange={(e) =>
-                setFormData({
-                  ...formData,
-                  gender: e.target.value as "female" | "male",
-                })
-              }
-              className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-500"
-            />
-            <span className="ml-2 text-sm text-gray-700">Female</span>
-          </label>
-          <label className="flex items-center">
-            <input
-              type="radio"
-              name="gender"
-              value="male"
-              checked={formData.gender === "male"}
-              onChange={(e) =>
-                setFormData({
-                  ...formData,
-                  gender: e.target.value as "female" | "male",
-                })
-              }
-              className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-500"
-            />
-            <span className="ml-2 text-sm text-gray-700">Male</span>
-          </label>
+          {CONSTANTS.PERSONA_CARD.GENDER.map((option) => (
+            <label key={option.value} className="flex items-center">
+              <input
+                type="radio"
+                name="gender"
+                value={option.value}
+                checked={formData.gender === option.value}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    gender: e.target.value as PersonaFormData["gender"],
+                  })
+                }
+                className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-500"
+              />
+              <span className="ml-2 text-sm text-gray-700">{option.label}</span>
+            </label>
+          ))}
         </div>
       </div>
 
-      {/* Age Range */}
+      {/* Years Born */}
       <div>
-        <label
-          htmlFor="ageRange"
-          className="block text-sm font-medium text-gray-700"
-        >
-          Age Range
+      <label
+        htmlFor="yearsBorn"
+        className="text-sm font-medium text-gray-700 flex items-center justify-between"
+      >
+          Years Born
+          {formData.yearsBorn && !isValidYear(formData.yearsBorn) && (
+            <span className="ml-2 text-sm text-red-600 flex items-center">
+              <ExclamationCircleIcon className="h-4 w-4 mr-1" />
+              Invalid input
+            </span>
+          )}
         </label>
-        <select
-          id="ageRange"
-          value={formData.ageRange}
-          onChange={handleAgeRangeChange}
+        <input
+          id="yearsBorn"
+          type="number"
+          value={formData.yearsBorn}
+          onChange={handleYearsBornChange}
           className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-        >
-          <option value="">Select age range</option>
-          {CONSTANTS.PERSONA_CARD.AGE_RANGES.map((range) => (
-            <option key={range.value} value={range.value}>
-              {range.label}
-            </option>
-          ))}
-        </select>
+        />
       </div>
 
       {/* Country */}
@@ -189,9 +187,35 @@ const ProfileForm = ({ onSubmit, isLoading, setYearsBorn }: ProfileFormProps) =>
         >
           <option value="independent">Living Independently</option>
           <option value="family">Living with Family</option>
-          <option value="assisted">Assisted Living Facility</option>
           <option value="nursing">Nursing Home</option>
         </select>
+      </div>
+
+      {/* Diseases */}
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-2">
+          Diseases
+        </label>
+        <div className="space-y-2">
+          {CONSTANTS.PERSONA_CARD.DISEASES.map((disease) => (
+            <label key={disease.id} className="flex items-center space-x-3">
+              <input 
+                className="h-4 w-4 rounded-lg border-gray-300 text-indigo-600 focus:ring-indigo-500" 
+                type="checkbox" 
+                name="diseases" 
+                value={disease.id} 
+                checked={formData.diseases?.includes(disease.id)}
+                onChange={(e) => setFormData({ 
+                  ...formData, 
+                  diseases: e.target.checked 
+                    ? [...(formData.diseases || []), disease.id]
+                    : formData.diseases?.filter((id) => id !== disease.id) 
+                })}
+              />
+              <span className="text-sm text-gray-700">{disease.label}</span>
+            </label>
+          ))}
+        </div>
       </div>
 
       {/* Health Status */}
@@ -220,9 +244,9 @@ const ProfileForm = ({ onSubmit, isLoading, setYearsBorn }: ProfileFormProps) =>
 
       <button
         type="submit"
-        disabled={!isSubmissionReady || isLoading}
+        disabled={!isSubmissionReady() || isLoading}
         className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white ${
-          !isSubmissionReady || isLoading
+          !isSubmissionReady() || isLoading
             ? "bg-indigo-200 cursor-not-allowed"
             : "bg-indigo-600 hover:bg-indigo-700"
         } focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500`}

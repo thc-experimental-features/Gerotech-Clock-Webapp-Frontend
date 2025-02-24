@@ -3,14 +3,13 @@ import ProfileForm from './components/ProfileForm'
 import ResultsDisplay from './components/ResultsDisplay'
 import EmptyState from './components/EmptyState'
 import LoadingState from './components/LoadingState'
+import DownloadPDFButton from './components/PDF-Downloader/DownloadPDFButton'
 import { generatePersona } from './services/openaiService'
 import { PersonaFormData, ApiResponse } from './types';
 
 function App(): React.JSX.Element {
-
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [personaData, setPersonaData] = useState<ApiResponse | undefined>(undefined)
-  const [yearsBorn, setYearsBorn] = useState<string>("");
   const [error, setError] = useState<string | null>(null)
 
   const handleSubmit = async (formData: PersonaFormData): Promise<void> => {
@@ -36,17 +35,21 @@ function App(): React.JSX.Element {
           </h1>
         </div>
       </header>
-
       <main className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
         <div className="grid gap-8 lg:grid-cols-12">
           <div className="lg:col-span-4">
-            <ProfileForm onSubmit={handleSubmit} isLoading={isLoading} setYearsBorn={setYearsBorn}/>
+            <ProfileForm onSubmit={handleSubmit} isLoading={isLoading}/>
           </div>
           <div className="lg:col-span-8">
             {isLoading ? (
               <LoadingState />
             ) : personaData ? (
-              <ResultsDisplay data={personaData} yearsBornText={yearsBorn}/>
+              <>
+                <div className="flex justify-end mb-3">
+                  <DownloadPDFButton data={personaData}/>
+                </div>
+                <ResultsDisplay data={personaData}/>
+              </>
             ) : (
               <EmptyState />
             )}
